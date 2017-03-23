@@ -1,0 +1,40 @@
+#!/system/bin/sh
+# PROJECT MOD BOOST EDITION  
+# NITRO X_SPARK EDITION V-II™ 
+# Copyright (C) 2015 K1ks
+#=======================================================================#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#  You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#=======================================================================#
+
+busybox mount -o remount,rw /
+busybox mount -o remount,rw rootfs
+busybox mount -o remount,rw /system
+
+PMB=/system/etc/Nitro/X00LIQUID.log
+
+if [ -e $PMB ]; then
+busybox	rm $PMB;
+fi;
+
+busybox touch $PMB;
+busybox echo "# NITRO X_SPARK EDITION" | tee -a $PMB;
+busybox echo "" | tee -a $PMB;
+busybox echo "# STARTING UP OF NITRO X : $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $PMB;
+busybox echo "" | tee -a $PMB;
+
+# Liquid =========================================#
+
+setprop persist.service.lgospd.enable false
+setprop persist.service.pcsync.enable false
+setprop touch.presure.scale 0.001
+
+busybox echo "Liquid Smooth UI = Activated..." | tee -a $PMB;
+busybox echo "" | tee -a $PMB;
+busybox echo "# END OF THE NITRO X : $( date +"%m-%d-%Y %H:%M:%S" ) " | tee -a $PMB

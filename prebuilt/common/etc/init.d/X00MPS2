@@ -1,0 +1,47 @@
+#!/system/bin/sh
+# PROJECT MOD BOOST EDITION  
+# NITRO X_SPARK EDITION V-II™ 
+# Copyright (C) 2015 K1ks
+#=======================================================================#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#  You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#=======================================================================#
+
+busybox mount -o remount,rw /
+busybox mount -o remount,rw rootfs
+busybox mount -o remount,rw /system
+
+PMB=/system/etc/Nitro/X00MPS2.log
+
+if [ -e $PMB ]; then
+busybox	rm $PMB;
+fi
+
+busybox touch $PMB;
+busybox echo "# NITRO X_SPARK EDITION" | tee -a $PMB;
+busybox echo "" | tee -a $PMB;
+busybox echo "# STARTING UP OF NITRO X : $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $PMB;
+busybox echo "" | tee -a $PMB;
+
+# CPU MULTICORE POWER SAVING =========================================#
+
+if [ -e /sys/devices/system/cpu/sched_mc_power_savings ];
+then 
+busybox echo "2" > /sys/devices/system/cpu/sched_mc_power_savings
+fi;
+
+busybox sleep 1
+
+if [ /sys/devices/system/cpu/sched_mc_power_savings=2 ]; then
+busybox echo "Multicore Power Saving Aggressive = Activated..." | tee -a $PMB; else
+busybox echo "Multicore Power Saving Aggressive = Not Activated..." | tee -a $PMB;
+fi;
+
+busybox echo "" | tee -a $PMB;
+busybox echo "# END OF THE NITRO X : $( date +"%m-%d-%Y %H:%M:%S" ) " | tee -a $PMB

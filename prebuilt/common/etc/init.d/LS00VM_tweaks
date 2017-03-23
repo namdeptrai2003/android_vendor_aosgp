@@ -1,0 +1,141 @@
+#!/system/bin/sh
+# L SPEED MOD
+# Copyright (C) 2015 Paget96
+#=======================================================================#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#  You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#=======================================================================#
+
+busybox=/system/etc/L_SPEED/00L_STUFF/busybox
+
+mount -o rw,remount / 2>/dev/null
+mount -o rw,remount / / 2>/dev/null
+mount -o rw,remount rootfs 2>/dev/null
+mount -o rw,remount /system 2>/dev/null
+mount -o rw,remount /system /system 2>/dev/null
+$busybox mount -o rw,remount / 2>/dev/null
+$busybox mount -o rw,remount / / 2>/dev/null
+$busybox mount -o rw,remount rootfs 2>/dev/null
+$busybox mount -o rw,remount /system 2>/dev/null
+$busybox mount -o rw,remount /system /system 2>/dev/null
+
+LS=/system/etc/L_SPEED/00L_STUFF/LOGS/LS_vm_tweaks.log
+
+$busybox rm -f $LS
+$busybox touch $LS
+
+$busybox echo "# L Speed log" | $busybox tee -a $LS
+$busybox echo "" | $busybox tee -a $LS
+$busybox echo "$( date +"%m-%d-%Y %H:%M:%S" ) Adding VM tweaks..." | $busybox tee -a $LS
+
+#Thanks to zeppelinrox for this calculation
+# MFK Calculator (for min_free_kbytes) created by zeppelinrox.
+#
+#SSADJ=`getprop ro.SECONDARY_SERVER_ADJ`
+#if [ ! "$SSADJ" ]; then SSADJ=5; fi
+#$busybox chmod 644 /sys/module/lowmemorykiller/parameters/minfree
+#$busybox chmod 644 /sys/module/lowmemorykiller/parameters/adj
+#minfree1=`$busybox awk -F , '{print $1}' /sys/module/lowmemorykiller/parameters/minfree`;minfree2=`$busybox awk -F , '{print $2}' /sys/module/lowmemorykiller/parameters/minfree`;minfree3=`$busybox awk -F , '{print $3}' /sys/module/lowmemorykiller/parameters/minfree`;minfree4=`$busybox awk -F , '{print $4}' /sys/module/lowmemorykiller/parameters/minfree`;minfree5=`$busybox awk -F , '{print $5}' /sys/module/lowmemorykiller/parameters/minfree`;minfree6=`$busybox awk -F , '{print $6}' /sys/module/lowmemorykiller/parameters/minfree`
+#oomadj1=`$busybox awk -F , '{print $1}' /sys/module/lowmemorykiller/parameters/adj`;oomadj2=`$busybox awk -F , '{print $2}' /sys/module/lowmemorykiller/parameters/adj`;oomadj3=`$busybox awk -F , '{print $3}' /sys/module/lowmemorykiller/parameters/adj`;oomadj4=`$busybox awk -F , '{print $4}' /sys/module/lowmemorykiller/parameters/adj`;oomadj5=`$busybox awk -F , '{print $5}' /sys/module/lowmemorykiller/parameters/adj`;oomadj6=`$busybox awk -F , '{print $6}' /sys/module/lowmemorykiller/parameters/adj`
+#if [ "$SSADJ" -le "$oomadj1" ]; then SSMF=$minfree1;slot=1;
+#elif [ "$SSADJ" -le "$oomadj2" ]; then SSMF=$minfree2;slot=2;
+#elif [ "$SSADJ" -le "$oomadj3" ]; then SSMF=$minfree3;slot=3;
+#elif [ "$SSADJ" -le "$oomadj4" ]; then SSMF=$minfree4;slot=4;
+#elif [ "$SSADJ" -le "$oomadj5" ]; then SSMF=$minfree5;slot=5;
+#elif [ "$SSADJ" -le "$oomadj6" ]; then SSMF=$minfree6;slot=6;
+#fi
+#MFK=$(($SSMF*4/5))
+
+mem=`$busybox awk '/MemTotal/{print $2}' /proc/meminfo`
+MFK=$(($mem/1024*4))
+
+$busybox chmod 644 /proc/sys/vm/*
+$busybox sysctl -w vm.dirty_expire_centisecs=500
+$busybox sysctl -w vm.dirty_writeback_centisecs=3000
+$busybox sysctl -w vm.block_dump=0
+$busybox sysctl -w vm.laptop_mode=0
+$busybox sysctl -w vm.min_free_kbytes=$MFK
+$busybox sysctl -w vm.min_free_order_shift=4
+# 75% of physical memory for allocations
+$busybox sysctl -w vm.overcommit_memory=1
+$busybox sysctl -w vm.overcommit_ratio=75
+# 4 swap pages per single attempt
+$busybox sysctl -w vm.page-cluster=2
+
+if [ "$mem" -lt 524288 ]; then
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=10
+    $busybox sysctl -w vm.dirty_ratio=5
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=40
+else
+		$busybox sysctl -w vm.swappiness=20
+fi
+  $busybox echo "VM profile for 512mb applied at $( date +"%m-%d-%Y %H:%M:%S" )" | $busybox tee -a $LS
+elif [ "$mem" -lt 786432 ]; then
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=10
+    $busybox sysctl -w vm.dirty_ratio=5
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=40
+else
+		$busybox sysctl -w vm.swappiness=20
+fi
+  $busybox echo "VM profile for 768mb applied at $( date +"%m-%d-%Y %H:%M:%S" )" | $busybox tee -a $LS
+elif [ "$mem" -lt 1048576 ]; then
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=5
+    $busybox sysctl -w vm.dirty_ratio=10
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=40
+else
+		$busybox sysctl -w vm.swappiness=20
+fi
+	$busybox echo "VM profile for 1gb applied at $( date +"%m-%d-%Y %H:%M:%S" )" | $busybox tee -a $LS
+elif [ "$mem" -lt 1572864 ]; then
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=5
+    $busybox sysctl -w vm.dirty_ratio=10
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=0
+else
+		$busybox sysctl -w vm.swappiness=0
+fi
+  $busybox echo "VM profile for 1.5gb applied at $( date +"%m-%d-%Y %H:%M:%S" )" | $busybox tee -a $LS
+elif [ "$mem" -lt 2097152 ]; then
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=5
+    $busybox sysctl -w vm.dirty_ratio=10
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=0
+else
+		$busybox sysctl -w vm.swappiness=0
+fi
+  $busybox echo "VM profile for 2gb applied at $( date +"%m-%d-%Y %H:%M:%S" )" | $busybox tee -a $LS	
+elif [ "$mem" -lt 3145728 ]; then
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=5
+    $busybox sysctl -w vm.dirty_ratio=10
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=0
+else
+		$busybox sysctl -w vm.swappiness=0
+fi
+  $busybox echo "VM profile for 3gb applied at $( date +"%m-%d-%Y %H:%M:%S" )" | $busybox tee -a $LS	
+else
+    $busybox chmod 644 /proc/sys/vm/*
+    $busybox sysctl -w vm.dirty_background_ratio=5
+    $busybox sysctl -w vm.dirty_ratio=10
+if [ -e /sys/block/zram* ];  then
+		$busybox sysctl -w vm.swappiness=0
+else
+		$busybox sysctl -w vm.swappiness=0
+fi
+ 	$busybox echo "VM profile for 3gb+ applied at $( date +"%m-%d-%Y %H:%M:%S" )" | $busybox tee -a $LS
+fi

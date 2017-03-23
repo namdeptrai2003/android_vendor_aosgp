@@ -1,0 +1,60 @@
+#!/system/bin/sh
+# L SPEED MOD
+# Copyright (C) 2015 Paget96
+#=======================================================================#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#  You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#=======================================================================#
+
+busybox=/system/etc/L_SPEED/00L_STUFF/busybox
+
+mount -o rw,remount / 2>/dev/null
+mount -o rw,remount / / 2>/dev/null
+mount -o rw,remount rootfs 2>/dev/null
+mount -o rw,remount /system 2>/dev/null
+mount -o rw,remount /system /system 2>/dev/null
+$busybox mount -o rw,remount / 2>/dev/null
+$busybox mount -o rw,remount / / 2>/dev/null
+$busybox mount -o rw,remount rootfs 2>/dev/null
+$busybox mount -o rw,remount /system 2>/dev/null
+$busybox mount -o rw,remount /system /system 2>/dev/null
+
+LS=/system/etc/L_SPEED/00L_STUFF/LOGS/LS_IO.log
+
+$busybox rm -f $LS
+$busybox touch $LS
+
+$busybox echo "# L Speed log" | $busybox tee -a $LS
+$busybox echo "" | $busybox tee -a $LS
+$busybox echo "$( date +"%m-%d-%Y %H:%M:%S" ) Adding I/O speed tweak..." | $busybox tee -a $LS
+
+path=`$busybox ls -d /sys/block/* 2>/dev/null`;
+for S in $path;
+do
+  if [ -e $S/queue/rq_affinity ]; then
+    $busybox echo "1" > $S/queue/rq_affinity
+  fi
+	if [ -e $S/queue/rotational ]; then
+		$busybox echo "0" > $S/queue/rotational
+	fi
+	if [ -e $S/queue/iostats ]; then
+		$busybox echo "0" > $S/queue/iostats
+	fi
+	if [ -e $S/queue/nr_requests ]; then
+		$busybox echo "512" > $S/queue/nr_requests
+	fi
+	if [ -e $S/queue/nomerges ]; then
+		$busybox echo "1" > $S/queue/nomerges
+	fi
+done
+
+$busybox echo "Queue parameters are changed" | $busybox tee -a $LS
+
+$busybox echo "" | $busybox tee -a $LS
+$busybox echo "$( date +"%m-%d-%Y %H:%M:%S" ) I/O speed tweak added" | $busybox tee -a $LS

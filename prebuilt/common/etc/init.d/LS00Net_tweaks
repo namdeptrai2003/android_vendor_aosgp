@@ -1,0 +1,73 @@
+#!/system/bin/sh
+# L SPEED MOD
+# Copyright (C) 2015 Paget96
+#=======================================================================#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#  You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#=======================================================================#
+
+busybox=/system/etc/L_SPEED/00L_STUFF/busybox
+
+mount -o rw,remount / 2>/dev/null
+mount -o rw,remount / / 2>/dev/null
+mount -o rw,remount rootfs 2>/dev/null
+mount -o rw,remount /system 2>/dev/null
+mount -o rw,remount /system /system 2>/dev/null
+$busybox mount -o rw,remount / 2>/dev/null
+$busybox mount -o rw,remount / / 2>/dev/null
+$busybox mount -o rw,remount rootfs 2>/dev/null
+$busybox mount -o rw,remount /system 2>/dev/null
+$busybox mount -o rw,remount /system /system 2>/dev/null
+
+LS=/system/etc/L_SPEED/00L_STUFF/LOGS/LS_net_tweaks.log
+
+$busybox rm -f $LS
+$busybox touch $LS
+
+$busybox echo "# L Speed log" | $busybox tee -a $LS
+$busybox echo "" | $busybox tee -a $LS
+$busybox echo "$( date +"%m-%d-%Y %H:%M:%S" ) Adding Net tweaks..." | $busybox tee -a $LS
+
+setprop net.tcp.buffersize.default 6144,87380,110208,6144,16384,110208
+setprop net.tcp.buffersize.wifi 262144,524288,1048576,262144,524288,1048576
+setprop net.tcp.buffersize.lte 262144,524288,3145728,262144,524288,3145728
+setprop net.tcp.buffersize.hsdpa 6144,262144,1048576,6144,262144,1048576
+setprop net.tcp.buffersize.evdo_b 6144,262144,1048576,6144,262144,1048576
+setprop net.tcp.buffersize.umts 6144,87380,110208,6144,16384,110208
+setprop net.tcp.buffersize.hspa 6144,87380,262144,6144,16384,262144
+setprop net.tcp.buffersize.gprs 6144,8760,11680,6144,8760,11680
+setprop net.tcp.buffersize.edge 6144,26280,35040,6144,16384,35040
+setprop ro.ril.enable.fd.plmn.prefix 23402,23410,23411
+
+$busybox echo "Buffer size added" | $busybox tee -a $LS
+
+setprop net.dns1 8.8.8.8
+setprop net.dns2 8.8.4.4
+setprop net.rmnet0.dns1 8.8.8.8
+setprop net.rmnet0.dns2 8.8.4.4
+
+#$busybox echo "Dns updated" | $busybox tee -a $LS
+
+setprop ro.ril.hsxpa 2
+setprop ro.ril.gprsclass 10
+setprop ro.ril.hep 1
+setprop ro.ril.hsdpa.category 8
+setprop ro.ril.hsupa.category 6
+setprop ro.ril.enable.sdr 1
+setprop ro.ril.enable.gea3 1
+setprop ro.ril.enable.fd.plmn.prefix 23402,23410,23411
+setprop ro.ril.enable.a52 0
+setprop ro.ril.enable.a53 0
+setprop ro.ril.enable.dtm 0
+
+setprop persist.telephony.support.ipv4 1
+setprop persist.telephony.support.ipv6 1
+
+$busybox echo "" | $busybox tee -a $LS
+$busybox echo "$( date +"%m-%d-%Y %H:%M:%S" ) Net tweaks added" | $busybox tee -a $LS

@@ -1,0 +1,171 @@
+#!/system/bin/sh
+# PROJECT MOD BOOST EDITION  
+# NITRO X_SPARK EDITION V-II™ 
+# Copyright (C) 2015 K1ks
+#=======================================================================#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#  You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#=======================================================================#
+
+busybox mount -o remount,rw /
+busybox mount -o remount,rw rootfs
+busybox mount -o remount,rw /system
+
+PMB=/system/etc/Nitro/X00CORE.log
+
+if [ -e $PMB ]; then
+busybox	rm $PMB;
+fi
+
+busybox touch $PMB;
+busybox echo "# NITRO X_SPARK EDITION" | tee -a $PMB;
+busybox echo "" | tee -a $PMB;
+busybox echo "# STARTING UP OF NITRO X : $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $PMB;
+busybox echo "" | tee -a $PMB;
+
+# VM Tweaks Nitro X =========================================#
+
+busybox chmod 644 /proc/sys/vm/*;
+
+busybox sysctl -e -w vm.drop_caches=3
+busybox sysctl -e -w vm.min_free_kbytes=4096
+busybox sysctl -e -w vm.oom_kill_allocating_task=1
+busybox sysctl -e -w vm.dirty_background_ratio=15
+busybox sysctl -e -w vm.dirty_ratio=90
+busybox sysctl -e -w vm.vfs_cache_pressure=20
+busybox sysctl -e -w vm.overcommit_memory=1
+busybox sysctl -e -w vm.overcommit_ratio=95
+busybox sysctl -e -w vm.min_free_order_shift=3
+busybox sysctl -e -w vm.laptop_mode=0
+busybox sysctl -e -w vm.block_dump=0
+busybox sysctl -e -w vm.oom_dump_tasks=1
+busybox sysctl -e -w vm.swappiness=0
+busybox sysctl -e -w vm.page-cluster=0
+busybox sysctl -e -w vm.dirty_expire_centisecs=200
+busybox sysctl -e -w vm.dirty_writeback_centisecs=500
+busybox sysctl -e -w vm.panic_on_oom=0
+busybox sysctl -e -w vm.drop_caches=1
+busybox sysctl -e -w fs.lease-break-time=5
+busybox sysctl -e -w fs.inotify.max_queued_events=32000
+busybox sysctl -e -w fs.inotify.max_user_instances=256
+busybox sysctl -e -w fs.inotify.max_user_watches=10240
+
+RAM=`free|grep Mem | awk '{print $2}'`;
+
+if [ "$RAM" -lt 512000 ];then
+busybox sysctl -e -w fs.file-max=32768
+elif [ "$RAM" -lt 7680000 ];then
+busybox sysctl -e -w fs.file-max=49152	
+elif [ "$RAM" -lt 1024000 ];then
+busybox sysctl -e -w fs.file-max=65536
+elif [ "$RAM" -lt 1536000 ];then
+busybox sysctl -e -w fs.file-max=98304
+elif [ "$RAM" -lt 2048000 ];then
+busybox sysctl -e -w fs.file-max=131072
+else
+busybox sysctl -e -w fs.file-max=196608	
+fi;
+
+busybox sleep 1
+
+if [ /proc/sys/vm/min_free_kbytes=4096 ]; then
+busybox echo "Optimization VM Nitro X = Activated..." | tee -a $PMB; else
+busybox echo "Optimization VM Nitro X = NOT Activated..." | tee -a $PMB;
+fi;
+
+# DYNAMIC Fsync =========================================#
+
+if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
+busybox echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
+fi;
+
+busybox sleep 1
+
+if [ /sys/kernel/dyn_fsync/Dyn_fsync_active=1 ]; then
+busybox echo "Optimization Dyn_fsync = Activated..." | tee -a $PMB; else
+busybox echo "Optimization Dyn_fsync = NOT Activated..." | tee -a $PMB;
+fi;
+
+# Scheduler Tweaks =========================================#
+STL=`ls -d /sys/block/stl*`
+BML=`ls -d /sys/block/bml*`
+MMC=`ls -d /sys/block/mmc*`
+ZRM=`ls -d /sys/block/zram*`
+MTD=`ls -d /sys/block/mtd*`
+RAM=`ls -d /sys/block/ram*`
+LP=`ls -d /sys/block/loop*`
+
+for X in $STL $BML $MMC $ZRM $MTD $RAM
+do
+busybox echo "0" > $X/queue/rotational;
+busybox echo "0" > $X/queue/iostats;
+done;
+busybox echo "Optimization Scheduler = Activated..." | tee -a $PMB;
+
+# Essentiel SetProp =========================================#
+
+setprop ro.config.nocheckin 1
+setprop ro.kernel.android.checkjni 0
+setprop ro.kernel.checkjni 0
+setprop ro.max.fling_velocity 12000
+setprop ro.min.fling_velocity 8000
+setprop wifi.supplicant_scan_interval 180
+setprop windowsmgr.max_events_per_sec 76
+setprop persist.sys.purgeable_assets 1
+setprop profiler.force_disable_err_rpt 1
+setprop profiler.force_disable_ulog 1
+setprop ro.ril.disable.power.collapse 1
+setprop mot.proximity.delay 25
+setprop ro.telephony.call_ring.delay 0
+setprop persist.sys.use_dithering 0
+setprop debug.performance.tuning 1
+setprop video.accelerate.hw 1
+setprop pm.sleep_mode 2 
+setprop debug.enabletr true
+setprop hwui.render_dirty_regions false
+if [ -e /dev/log/main ]; then
+busybox rm /dev/log/main
+fi;
+
+if [ -e /dev/log/main ]; then
+busybox echo "Essentiel SetProp Nitro X = Not Activated..." | tee -a $PMB; else
+busybox echo "Essentiel SetProp Nitro X = Activated..." | tee -a $PMB;
+fi;
+
+AutoTasks =========================================#
+
+# Crond has "/bin/sh" hardcoded, so need to symlink /system/bin to /bin
+	
+ln -s /system/bin/ /bin
+
+# Timezone Cron
+ 
+timezone=`date +%z`
+
+if busybox [ $timezone = "-0800" ]; then
+CTZ=PST8PDT
+elif busybox [ $timezone = "-0700" ]; then
+CTZ=MST7MDT
+elif busybox [ $timezone = "-0600" ]; then
+CTZ=CST6CDT
+elif busybox [ $timezone = "-0500" ]; then
+CTZ=EST5EDT
+else
+CTZ=PST8PDT
+fi;
+
+export CTZ
+
+crond -c /system/etc/Cron
+
+busybox echo "AutoTasks = Activated..." | tee -a $PMB;
+
+busybox echo "" | tee -a $PMB;
+busybox echo "# END OF THE NITRO X_SPARK : $( date +"%m-%d-%Y %H:%M:%S" ) " | tee -a $PMB;
+busybox echo "" | tee -a $PMB;

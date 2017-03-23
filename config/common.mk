@@ -1,4 +1,4 @@
-PRODUCT_BRAND ?= crdroidandroid
+PRODUCT_BRAND ?= LineageOS
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 
@@ -62,6 +62,31 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     vendor/cm/prebuilt/common/etc/init.d/00banner:system/etc/init.d/00banner \
     vendor/cm/prebuilt/common/bin/sysinit:system/bin/sysinit
+
+# AOSGP Tweaks support
+PRODUCT_COPY_FILES += \
+    vendor/cm/prebuilt/common/etc/init.d/00ARCHIDROID_INITD:system/etc/init.d/00ARCHIDROID_INITD \
+    vendor/cm/prebuilt/common/etc/init.d/LS00better_scrolling:system/etc/init.d/LS00better_scrolling \
+    vendor/cm/prebuilt/common/etc/init.d/LS00Cleaner:system/etc/init.d/LS00Cleaner \
+    vendor/cm/prebuilt/common/etc/init.d/LS00CPU:system/etc/init.d/LS00CPU \
+    vendor/cm/prebuilt/common/etc/init.d/LS00CPU_optimizer:system/etc/init.d/LS00CPU_optimizer \
+    vendor/cm/prebuilt/common/etc/init.d/LS00GP_services_drainfix:system/etc/init.d/LS00GP_services_drainfix \
+    vendor/cm/prebuilt/common/etc/init.d/LS00improve_battery:system/etc/init.d/LS00improve_battery \
+    vendor/cm/prebuilt/common/etc/init.d/LS00IO:system/etc/init.d/LS00IO \
+    vendor/cm/prebuilt/common/etc/init.d/LS00Kernel_tweaks:system/etc/init.d/LS00Kernel_tweaks \
+    vendor/cm/prebuilt/common/etc/init.d/LS00Kill_google_apps:system/etc/init.d/LS00Kill_google_apps \
+    vendor/cm/prebuilt/common/etc/init.d/LS00Net_tweaks:system/etc/init.d/LS00Net_tweaks \
+    vendor/cm/prebuilt/common/etc/init.d/LS00Ram_manager_BL:system/etc/init.d/LS00Ram_manager_BL \
+    vendor/cm/prebuilt/common/etc/init.d/LS00VM_tweaks:system/etc/init.d/LS00VM_tweaks \
+    vendor/cm/prebuilt/common/etc/init.d/X00CORE4:system/etc/init.d/X00CORE4 \
+    vendor/cm/prebuilt/common/etc/init.d/X00DEFAULT:system/etc/init.d/X00DEFAULT \
+    vendor/cm/prebuilt/common/etc/init.d/X00LIQUID:system/etc/init.d/X00LIQUID \
+    vendor/cm/prebuilt/common/etc/init.d/X00MPS2:system/etc/init.d/X00MPS2 \
+    vendor/cm/prebuilt/common/etc/init.d/X00RENICE:system/etc/init.d/X00RENICE \
+    vendor/cm/prebuilt/common/etc/init.d/X00TRIM:system/etc/init.d/X00TRIM \
+    vendor/cm/prebuilt/common/etc/init.d/X00ZIP:system/etc/init.d/X00ZIP \
+    vendor/cm/prebuilt/common/priv-app/Substratum/substratum.apk:system/priv-app/Substratum/substratum.apk \
+    vendor/cm/prebuilt/common/media/bootanimation.zip:system/media/bootanimation.zip
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 # userinit support
@@ -131,7 +156,12 @@ PRODUCT_PACKAGES += \
     LockClock \
     Trebuchet \
     WallpaperPicker \
-    WeatherProvider
+    WeatherProvider \
+    Snap \
+    NexusLauncher \
+    ResurrectionOTA \
+    CMFileManager \
+    AOSGPSetupWizard
 
 # Exchange support
 PRODUCT_PACKAGES += \
@@ -231,15 +261,9 @@ DEVICE_PACKAGE_OVERLAYS += vendor/cm/overlay/common
 # Don't compile SystemUITests
 EXCLUDE_SYSTEMUI_TESTS := true
 
-# Adaway
-PRODUCT_COPY_FILES += \
-    vendor/cm/prebuilt/AdAway/AdAway.apk:system/app/AdAway/AdAway.apk
-
 # Custom crDroid packages
 PRODUCT_PACKAGES += \
     OmniJaws \
-    OmniStyle \
-    OmniSwitch \
     ThemeInterfacer \
     libprotobuf-cpp-full
 
@@ -269,22 +293,21 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_VERSION_MAJOR = 7
 PRODUCT_VERSION_MINOR = 1.1
 
-# Increase CR Version with each major release.
-CR_VERSION := 2.4
+# AOSGP version
+AOSGP_VERSION := X-2.1
 
-
-LINEAGE_VERSION := crDroidAndroid-$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR)-$(shell date -u +%Y%m%d)-$(CM_BUILD)-v$(CR_VERSION)
-LINEAGE_DISPLAY_VERSION := crDroidAndroid-$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR)-$(shell date -u +%Y%m%d)-v$(CR_VERSION)
+LINEAGE_VERSION := aosgp-$(AOSGP_VERSION)-$(shell date -u +%Y%m%d)-$(CM_BUILD)
+AOSGP_DISPLAY_VERSION := aosgp-$(AOSGP_VERSION)-$(shell date -u +%Y%m%d)-$(CM_BUILD)
 
 PRODUCT_PROPERTY_OVERRIDES += \
-  ro.crdroid.version=$(LINEAGE_VERSION) \
-  ro.modversion=$(LINEAGE_VERSION)
+  ro.crdroid.version=$(AOSGP_DISPLAY_VERSION) \
+  ro.modversion=$(AOSGP_DISPLAY_VERSION)
 
 PRODUCT_EXTRA_RECOVERY_KEYS += \
   vendor/cm/build/target/product/security/lineage
 
 PRODUCT_PROPERTY_OVERRIDES += \
-  ro.crdroid.display.version=$(LINEAGE_DISPLAY_VERSION)
+  ro.crdroid.display.version=$(AOSGP_DISPLAY_VERSION)
 
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
 -include vendor/cm/config/partner_gms.mk

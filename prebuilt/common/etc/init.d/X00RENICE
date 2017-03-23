@@ -1,0 +1,77 @@
+#!/system/bin/sh
+# PROJECT MOD BOOST EDITION  
+# NITRO X_SPARK EDITION V-II™ 
+# Copyright (C) 2015 K1ks
+#=======================================================================#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#  You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#=======================================================================#
+
+busybox mount -o remount,rw /
+busybox mount -o remount,rw rootfs
+busybox mount -o remount,rw /system
+
+PMB=/system/etc/Nitro/X00RENICE.log
+
+if [ -e $PMB ]; then
+busybox	rm $PMB;
+fi
+
+busybox touch $PMB;
+busybox echo "# NITRO X_SPARK EDITION" | tee -a $PMB;
+busybox echo "" | tee -a $PMB;
+busybox echo "# STARTING UP OF NITRO X : $( date +"%m-%d-%Y %H:%M:%S" )" | tee -a $PMB;
+busybox echo "" | tee -a $PMB;
+
+
+for pid in `busybox ps | busybox awk '{ if ( $2 ~ /^root$/ && $4 !~ /netd$|rild$|zygote$|kswapd|vold|loop/ ) print $1 }'`; do
+busybox ionice -c 2 -n 3 -p $pid 2>/dev/null
+done;
+
+busybox echo "Renice Swap/Loop... = Activated..." | tee -a $PMB;
+
+for pid in $(busybox pgrep pdflush 2>/dev/null); do
+busybox renice 7 $pid 2>/dev/null
+busybox ionice -c 3 -n 7 -p $pid 2>/dev/null
+done;
+
+busybox echo "Renice PdFlush... = Activated..." | tee -a $PMB;
+
+for pid in $(busybox pgrep flush- 2>/dev/null); do
+busybox renice 7 $pid 2>/dev/null
+busybox ionice -c 3 -n 7 -p $pid 2>/dev/null
+done;
+
+busybox echo "Renice Flush... = Activated..." | tee -a $PMB;
+
+
+pid=$(busybox pgrep zygote 2>/dev/null)
+busybox renice -1 $pid 2>/dev/null
+busybox ionice -c 1 -n 0 -p $pid 2>/dev/null
+
+busybox echo "Renice Zygote... = Activated..." | tee -a $PMB;
+
+for pid in `dumpsys activity services | busybox grep -i app=ProcessRecord | busybox awk '{ print $2 }' | busybox grep -v '/100[0-9]}' | busybox cut -d: -f1`; do
+busybox renice 7 $pid 2>/dev/null
+busybox ionice -c 2 -n 7 -p $pid 2>/dev/null
+done;
+
+busybox echo "Renice Dumpsys Activity Service = Activated..." | tee -a $PMB;
+
+for pid in `busybox ps | busybox awk '{ if ( $2 ~ /^app_/) print $1 }'`; do
+busybox renice -1 $pid 2>/dev/null
+busybox ionice -c 1 -n 0 -p $pid 2>/dev/null
+done;
+
+busybox echo "Renice Apps... = Activated..." | tee -a $PMB;
+
+busybox echo "" | tee -a $PMB;
+busybox echo "Optimization Renice System = Activated..." | tee -a $PMB
+busybox echo "" | tee -a $PMB;
+busybox echo "# END OF THE NITRO X : $( date +"%m-%d-%Y %H:%M:%S" ) " | tee -a $PMB
