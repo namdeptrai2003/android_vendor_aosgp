@@ -274,7 +274,8 @@ PRODUCT_PROPERTY_OVERRIDES := \
 
 # Enable Google Assistant
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.opa.eligible_device=true
+    ro.opa.eligible_device=true /
+    ro.com.google.ime.theme_id=5
 
 #DU Utils Library
 PRODUCT_PACKAGES += \
