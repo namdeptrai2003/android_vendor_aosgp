@@ -294,10 +294,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Product version should match Android version
 PRODUCT_VERSION_MAJOR = 7
-PRODUCT_VERSION_MINOR = 1.1
+PRODUCT_VERSION_MINOR = 1.2
 
 # AOSGP version
-AOSGP_VERSION := X-2.1
+AOSGP_VERSION := X-2.1.1
 
 LINEAGE_VERSION := aosgp-$(AOSGP_VERSION)-$(shell date -u +%Y%m%d)-$(CM_BUILD)
 AOSGP_DISPLAY_VERSION := aosgp-$(AOSGP_VERSION)-$(shell date -u +%Y%m%d)-$(CM_BUILD)
