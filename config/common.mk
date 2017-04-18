@@ -163,7 +163,8 @@ PRODUCT_PACKAGES += \
     NexusLauncher \
     ResurrectionOTA \
     CMFileManager \
-    AOSGPSetupWizard
+    FlickLauncher
+    #AOSGPSetupWizard 
 
 # Exchange support
 PRODUCT_PACKAGES += \
