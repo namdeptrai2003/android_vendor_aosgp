@@ -1,0 +1,46 @@
+#!/system/bin/sh
+# AOSGP TWEAKS
+#=======================================================================#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#  You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#=======================================================================#
+
+mount -o rw,remount / 2>/dev/null
+mount -o rw,remount / / 2>/dev/null
+mount -o rw,remount rootfs 2>/dev/null
+mount -o rw,remount /system 2>/dev/null
+mount -o rw,remount /system /system 2>/dev/null
+$busybox mount -o rw,remount / 2>/dev/null
+$busybox mount -o rw,remount / / 2>/dev/null
+$busybox mount -o rw,remount rootfs 2>/dev/null
+$busybox mount -o rw,remount /system 2>/dev/null
+$busybox mount -o rw,remount /system /system 2>/dev/null
+
+
+$busybox rm -f $LS
+$busybox touch $LS
+
+#Source - google code
+# Thanks to @fivefour
+pid=$($busybox pgrep surfaceflinger 2>/dev/null)
+$busybox $pid >> /dev/cpuctl/cgroup.procs 2>/dev/null
+for i in `ls /proc/$pid/task 2>/dev/null`; do
+  $busybox $i >> /dev/cpuctl/tasks 2>/dev/null
+done
+
+pid=$($busybox pgrep binder 2>/dev/null)
+$busybox echo $pid >> /dev/cpuctl/cgroup.procs 2>/dev/null
+for i in `ls /proc/$pid/task 2>/dev/null`; do
+  $busybox echo $i >> /dev/cpuctl/tasks 2>/dev/null
+done
+
+$busybox echo 96 > /dev/cpuctl/bg_non_interactive/cpu.shares 2>/dev/null
+
+$busybox echo "" | $busybox tee -a $LS
+$busybox echo "$( date +"%m-%d-%Y %H:%M:%S" ) CPU is optimized" | $busybox tee -a $LS
