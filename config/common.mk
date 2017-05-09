@@ -66,25 +66,18 @@ PRODUCT_COPY_FILES += \
 # AOSGP Tweaks support
 PRODUCT_COPY_FILES += \
     vendor/cm/prebuilt/common/etc/init.d/00ARCHIDROID_INITD:system/etc/init.d/00ARCHIDROID_INITD \
-    vendor/cm/prebuilt/common/etc/init.d/LS00better_scrolling:system/etc/init.d/LS00better_scrolling \
-    vendor/cm/prebuilt/common/etc/init.d/LS00Cleaner:system/etc/init.d/LS00Cleaner \
-    vendor/cm/prebuilt/common/etc/init.d/LS00CPU:system/etc/init.d/LS00CPU \
-    vendor/cm/prebuilt/common/etc/init.d/LS00CPU_optimizer:system/etc/init.d/LS00CPU_optimizer \
-    vendor/cm/prebuilt/common/etc/init.d/LS00GP_services_drainfix:system/etc/init.d/LS00GP_services_drainfix \
-    vendor/cm/prebuilt/common/etc/init.d/LS00improve_battery:system/etc/init.d/LS00improve_battery \
-    vendor/cm/prebuilt/common/etc/init.d/LS00IO:system/etc/init.d/LS00IO \
-    vendor/cm/prebuilt/common/etc/init.d/LS00Kernel_tweaks:system/etc/init.d/LS00Kernel_tweaks \
-    vendor/cm/prebuilt/common/etc/init.d/LS00Kill_google_apps:system/etc/init.d/LS00Kill_google_apps \
-    vendor/cm/prebuilt/common/etc/init.d/LS00Net_tweaks:system/etc/init.d/LS00Net_tweaks \
-    vendor/cm/prebuilt/common/etc/init.d/LS00Ram_manager_BL:system/etc/init.d/LS00Ram_manager_BL \
-    vendor/cm/prebuilt/common/etc/init.d/LS00VM_tweaks:system/etc/init.d/LS00VM_tweaks \
-    vendor/cm/prebuilt/common/etc/init.d/X00CORE4:system/etc/init.d/X00CORE4 \
-    vendor/cm/prebuilt/common/etc/init.d/X00DEFAULT:system/etc/init.d/X00DEFAULT \
-    vendor/cm/prebuilt/common/etc/init.d/X00LIQUID:system/etc/init.d/X00LIQUID \
-    vendor/cm/prebuilt/common/etc/init.d/X00MPS2:system/etc/init.d/X00MPS2 \
-    vendor/cm/prebuilt/common/etc/init.d/X00RENICE:system/etc/init.d/X00RENICE \
-    vendor/cm/prebuilt/common/etc/init.d/X00TRIM:system/etc/init.d/X00TRIM \
-    vendor/cm/prebuilt/common/etc/init.d/X00ZIP:system/etc/init.d/X00ZIP \
+    vendor/cm/prebuilt/common/etc/init.d/AS00better_scrolling:system/etc/init.d/LS00better_scrolling \
+    vendor/cm/prebuilt/common/etc/init.d/AS00CPU:system/etc/init.d/LS00CPU \
+    vendor/cm/prebuilt/common/etc/init.d/AS00CPU_optimizer:system/etc/init.d/LS00CPU_optimizer \
+    vendor/cm/prebuilt/common/etc/init.d/AS00GP_services_drainfix:system/etc/init.d/LS00GP_services_drainfix \
+    vendor/cm/prebuilt/common/etc/init.d/AS00improve_battery:system/etc/init.d/LS00improve_battery \
+    vendor/cm/prebuilt/common/etc/init.d/AS00Kernel_tweaks:system/etc/init.d/LS00Kernel_tweaks \
+    vendor/cm/prebuilt/common/etc/init.d/AS00Kill_google_apps:system/etc/init.d/LS00Kill_google_apps \
+    vendor/cm/prebuilt/common/etc/init.d/AS00Ram_manager_BL:system/etc/init.d/LS00Ram_manager_BL \
+    vendor/cm/prebuilt/common/etc/init.d/AS00VM_tweaks:system/etc/init.d/LS00VM_tweaks \
+    vendor/cm/prebuilt/common/etc/init.d/AX00DEFAULT:system/etc/init.d/X00DEFAULT \
+    vendor/cm/prebuilt/common/etc/init.d/AX00MPS2:system/etc/init.d/X00MPS2 \
+    vendor/cm/prebuilt/common/etc/init.d/AX00ZIP:system/etc/init.d/X00ZIP \
     vendor/cm/prebuilt/common/priv-app/Substratum/substratum.apk:system/priv-app/Substratum/substratum.apk \
     vendor/cm/prebuilt/common/priv-app/FlickLauncher/FlickLauncher.apk:system/priv-app/FlickLauncher/FlickLauncher.apk \
     vendor/cm/prebuilt/common/media/bootanimation.zip:system/media/bootanimation.zip
