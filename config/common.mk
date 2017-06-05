@@ -154,7 +154,7 @@ PRODUCT_PACKAGES += \
     WeatherProvider \
     Snap \
     PixelLauncher \
-    AOSGPWals \
+    AOSGPWalls \
     ResurrectionOTA \
     CMFileManager \
     #AOSGPSetupWizard 
