@@ -144,7 +144,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     AudioFX \
     CMSettingsProvider \
-    CMUpdater \
     CustomTiles \
     Eleven \
     ExactCalculator \
@@ -154,7 +153,8 @@ PRODUCT_PACKAGES += \
     WallpaperPicker \
     WeatherProvider \
     Snap \
-    NexusLauncher \
+    PixelLauncher \
+    AOSGPWals \
     ResurrectionOTA \
     CMFileManager \
     #AOSGPSetupWizard 
