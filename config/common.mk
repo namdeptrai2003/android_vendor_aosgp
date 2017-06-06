@@ -157,6 +157,7 @@ PRODUCT_PACKAGES += \
     AOSGPWalls \
     ResurrectionOTA \
     CMFileManager \
+    Jelly \
     #AOSGPSetupWizard 
 
 # Exchange support
