@@ -79,7 +79,7 @@ PRODUCT_COPY_FILES += \
     vendor/cm/prebuilt/common/etc/init.d/AX00MPS2:system/etc/init.d/X00MPS2 \
     vendor/cm/prebuilt/common/etc/init.d/AX00ZIP:system/etc/init.d/X00ZIP \
     vendor/cm/prebuilt/common/priv-app/Substratum/substratum.apk:system/priv-app/Substratum/substratum.apk \
-    vendor/cm/prebuilt/common/priv-app/FlickLauncher/FlickLauncher.apk:system/priv-app/FlickLauncher/FlickLauncher.apk \
+    vendor/cm/prebuilt/common/priv-app/Lawnchair/Lawnchair.apk:system/priv-app/Lawnchair/Lawnchair.apk \
     vendor/cm/prebuilt/common/media/bootanimation.zip:system/media/bootanimation.zip
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
@@ -142,18 +142,15 @@ PRODUCT_PACKAGES += \
 
 # Custom CM packages
 PRODUCT_PACKAGES += \
-    AudioFX \
     CMSettingsProvider \
     CustomTiles \
     Eleven \
     ExactCalculator \
     LiveLockScreenService \
     LockClock \
-    Trebuchet \
     WallpaperPicker \
     WeatherProvider \
     Snap \
-    PixelLauncher \
     AOSGPWalls \
     ResurrectionOTA \
     CMFileManager \
@@ -272,11 +269,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES := \
     ro.substratum.verified=true
 
-# Enable Google Assistant
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.opa.eligible_device=true /
-    ro.com.google.ime.theme_id=5
-
 #DU Utils Library
 PRODUCT_PACKAGES += \
     org.dirtyunicorns.utils
@@ -297,7 +289,7 @@ PRODUCT_VERSION_MAJOR = 7
 PRODUCT_VERSION_MINOR = 1.2
 
 # AOSGP version
-AOSGP_VERSION := X-2.1.1
+AOSGP_VERSION := L-0.1
 
 LINEAGE_VERSION := aosgp-$(AOSGP_VERSION)-$(shell date -u +%Y%m%d)-$(CM_BUILD)
 AOSGP_DISPLAY_VERSION := aosgp-$(AOSGP_VERSION)-$(shell date -u +%Y%m%d)-$(CM_BUILD)
