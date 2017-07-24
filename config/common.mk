@@ -79,7 +79,6 @@ PRODUCT_COPY_FILES += \
     vendor/cm/prebuilt/common/etc/init.d/AX00MPS2:system/etc/init.d/X00MPS2 \
     vendor/cm/prebuilt/common/etc/init.d/AX00ZIP:system/etc/init.d/X00ZIP \
     vendor/cm/prebuilt/common/priv-app/Substratum/substratum.apk:system/priv-app/Substratum/substratum.apk \
-    vendor/cm/prebuilt/common/priv-app/FlickLauncher/FlickLauncher.apk:system/priv-app/FlickLauncher/FlickLauncher.apk \
     vendor/cm/prebuilt/common/media/bootanimation.zip:system/media/bootanimation.zip
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
