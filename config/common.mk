@@ -78,6 +78,8 @@ PRODUCT_COPY_FILES += \
     vendor/cm/prebuilt/common/etc/init.d/AX00DEFAULT:system/etc/init.d/X00DEFAULT \
     vendor/cm/prebuilt/common/etc/init.d/AX00MPS2:system/etc/init.d/X00MPS2 \
     vendor/cm/prebuilt/common/etc/init.d/AX00ZIP:system/etc/init.d/X00ZIP \
+    vendor/cm/prebuilt/common/etc/init.d/98fly_engine:system/etc/init.d/98fly_engine \
+    vendor/cm/prebuilt/common/etc/init.d/S98system_tweak:system/etc/init.d/S98system_tweak \
     vendor/cm/prebuilt/common/priv-app/Substratum/substratum.apk:system/priv-app/Substratum/substratum.apk \
     vendor/cm/prebuilt/common/media/bootanimation.zip:system/media/bootanimation.zip
 
