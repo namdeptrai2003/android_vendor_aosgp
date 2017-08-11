@@ -158,7 +158,8 @@ PRODUCT_PACKAGES += \
     ResurrectionOTA \
     CMFileManager \
     Jelly \
-    Snapdragon Music \
+    SnapdragonMusic \
+    AnExplorer \
     #AOSGPSetupWizard 
 
 # Exchange support
