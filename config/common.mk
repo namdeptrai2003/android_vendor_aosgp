@@ -146,7 +146,6 @@ PRODUCT_PACKAGES += \
     AudioFX \
     CMSettingsProvider \
     CustomTiles \
-    Eleven \
     ExactCalculator \
     LiveLockScreenService \
     LockClock \
@@ -159,6 +158,7 @@ PRODUCT_PACKAGES += \
     ResurrectionOTA \
     CMFileManager \
     Jelly \
+    Snapdragon Music \
     #AOSGPSetupWizard 
 
 # Exchange support
