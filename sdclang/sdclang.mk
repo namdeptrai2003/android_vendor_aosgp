@@ -14,7 +14,7 @@
 
 SDCLANG ?= true
 
-SDCLANG_PATH := vendor/qcom/sdclang-3.8/linux-x86/bin
+SDCLANG_PATH := vendor/qcom/sdclang-3.8/bin
 
 SDCLANG_LTO_DEFS := vendor/cm/sdclang/sdllvm-lto-defs.mk
 
