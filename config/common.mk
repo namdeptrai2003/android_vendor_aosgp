@@ -20,7 +20,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.config.notification_sound=Tethys.ogg \
     ro.config.alarm_alert=Oxygen.ogg
-
+    
+PLATFORM_VERSION_CODENAME := OFFICIAL
 ifneq ($(TARGET_BUILD_VARIANT),user)
 # Thank you, please drive thru!
 PRODUCT_PROPERTY_OVERRIDES += persist.sys.dun.override=0
@@ -299,7 +300,7 @@ PRODUCT_VERSION_MAJOR = 7
 PRODUCT_VERSION_MINOR = 1.2
 
 # AOSGP version
-AOSGP_VERSION := X-2.2
+AOSGP_VERSION :=UNKNOWN MODIFIED X-2.2
 
 LINEAGE_VERSION := aosgp-$(AOSGP_VERSION)-$(shell date -u +%Y%m%d)-$(CM_BUILD)
 AOSGP_DISPLAY_VERSION := aosgp-$(AOSGP_VERSION)-$(shell date -u +%Y%m%d)-$(CM_BUILD)
